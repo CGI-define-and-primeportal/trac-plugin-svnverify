@@ -16,10 +16,14 @@ from datetime import datetime
 from trac.admin import AdminCommandError, IAdminCommandProvider
 from trac.core import Component, implements, ExtensionPoint
 from trac.util.translation import _
-from trac.config import ListOption, Option
+from trac.config import ListOption
 from trac.versioncontrol import RepositoryManager, IRepositoryChangeListener
 from tracrpc.api import IXMLRPCHandler
 from trac.perm import IPermissionRequestor
+
+from announcer.api import AnnouncementSystem, IAnnouncementProducer
+
+from svnverifyplugin.announcements import SVNVerifyFailEvent
 
 # this uses paths, IDs and names... Maybe it can be simplified to use
 # only a single item as the keying variable. Trac itself seems to have
@@ -32,8 +36,9 @@ class SVNVerifyCommands(Component):
     implements(IAdminCommandProvider,
                IXMLRPCHandler,
                IPermissionRequestor,
-               IRepositoryChangeListener)
-    
+               IRepositoryChangeListener,
+               IAnnouncementProducer)
+
     # IPermissionRequestor methods
     def get_permission_actions(self):
         return ['SVNVERIFY_REPORT', 'SVNVERIFY_RUN']
@@ -126,6 +131,11 @@ class SVNVerifyCommands(Component):
         
         if child.returncode == 0:
             return True
+        else:
+            announcer = AnnouncementSystem(self.env)
+            announcer.send(SVNVerifyFailEvent("versioncontrol", "verifyfail", path,
+                                              log=err))
+            return False
 
     def verifyAll(self):
         all_verified_good = True

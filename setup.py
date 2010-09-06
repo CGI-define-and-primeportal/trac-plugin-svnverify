@@ -41,8 +41,9 @@ setup(
     package_data = {'svnverifyplugin' : ['templates/*.html','htdocs/css/*.css']}, 
     entry_points = {'trac.plugins': ['svnverifyplugin.web_ui   = svnverifyplugin.web_ui',
                                      'svnverifyplugin.db       = svnverifyplugin.db',
+                                     'svnverifyplugin.announcements = svnverifyplugin.announcements',
                                      'svnverifyplugin.commands = svnverifyplugin.commands']},
-    install_requires = [],
+    install_requires = ['AnnouncerPlugin'],
     tests_require = ['nose'],
     test_suite = 'nose.collector',    
 )
