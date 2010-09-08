@@ -39,6 +39,10 @@ class SVNVerifyCommands(Component):
                IRepositoryChangeListener,
                IAnnouncementProducer)
 
+    # IAnnouncementProducer
+    def realms(self):
+        yield 'versioncontrol'
+
     # IPermissionRequestor methods
     def get_permission_actions(self):
         return ['SVNVERIFY_REPORT', 'SVNVERIFY_RUN']

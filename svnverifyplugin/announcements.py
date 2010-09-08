@@ -11,7 +11,7 @@ from trac.web.chrome import Chrome
 from genshi.template import TemplateLoader, NewTextTemplate
 
 from announcer.api import AnnouncementSystem, AnnouncementEvent, \
-    IAnnouncementProducer, IAnnouncementSubscriber, IAnnouncementFormatter
+    IAnnouncementSubscriber, IAnnouncementFormatter
 
 class SVNVerifyFailEvent(AnnouncementEvent):
     def __init__(self, realm, category, target, log):
@@ -19,8 +19,7 @@ class SVNVerifyFailEvent(AnnouncementEvent):
         self.log = log
 
 class SVNVerifyAnnouncer(Component):
-    implements(IAnnouncementProducer,
-               IAnnouncementFormatter,
+    implements(IAnnouncementFormatter,
                IAnnouncementSubscriber)
 
     text_template_name = Option('svn', 
