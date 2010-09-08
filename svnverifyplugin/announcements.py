@@ -34,7 +34,7 @@ class SVNVerifyAnnouncer(Component):
                                                    to send warnings to.""")
     # IAnnouncementSubscriber
     def subscriptions(self, event):
-        if event.realm != 'versioncontrol' or event.category != 'verifyfail':
+        if event.realm != 'integrity' or event.category != 'verifyfail':
             return
         for target in self.email_notification_targets:
             if "@" in target:
@@ -49,15 +49,15 @@ class SVNVerifyAnnouncer(Component):
 
     # IAnnouncementFormatter
     def styles(self, transport, realm):
-        if realm == "versioncontrol":
+        if realm == "integrity":
             yield "text/plain"
         
     def alternative_style_for(self, transport, realm, style):
-        if realm == "versioncontrol" and style != 'text/plain':
+        if realm == "integrity" and style != 'text/plain':
             return "text/plain"
         
     def format(self, transport, realm, style, event):
-        if realm == "versioncontrol":
+        if realm == "integrity":
             if style == "text/plain":
                 return self._format_plaintext(event)
 

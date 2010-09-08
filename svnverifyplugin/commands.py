@@ -41,7 +41,7 @@ class SVNVerifyCommands(Component):
 
     # IAnnouncementProducer
     def realms(self):
-        yield 'versioncontrol'
+        yield 'integrity'
 
     # IPermissionRequestor methods
     def get_permission_actions(self):
@@ -137,7 +137,7 @@ class SVNVerifyCommands(Component):
             return True
         else:
             announcer = AnnouncementSystem(self.env)
-            announcer.send(SVNVerifyFailEvent("versioncontrol", "verifyfail", path,
+            announcer.send(SVNVerifyFailEvent("integrity", "verifyfail", path,
                                               log=err))
             return False
 
