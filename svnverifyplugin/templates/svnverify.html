@@ -10,33 +10,35 @@
     <title>File Archive: Subversion verify of ${info.name}</title>
   </head>
   <body>
-    <h2>Subversion Verify: ${info.name}</h2>
-
-    <h3>Summary</h3>
-    <table class="listing">
-      <thead>
-	<tr>
-	  <th>Path</th>
-	  <th>Date Checked</th>
-	  <th>Check Type</th>
-	  <th>Result</th>
-	</tr>
-      </thead>
-      <tbody>
-	<tr>
-	  <td py:content="info.prettydir"/>
-	  <td py:content="info.time_checked"/>
-	  <td py:content="info.check_type"/>
-	  <td py:content="info.pretty_status"/>
-	</tr>
-      </tbody>
-    </table>
-
-    <h3>Log output</h3>
-    <div>
-      <pre>${info.log}</pre>
-    </div>
-
+ 	 <div id="sub-main-large-right">
+	    <h3>Subversion Verify: ${info.name}</h3>
+	
+	    <strong>Summary</strong>
+	    <table class="listing">
+	      <thead>
+		<tr>
+		  <th>Path</th>
+		  <th>Date Checked</th>
+		  <th>Check Type</th>
+		  <th>Result</th>
+		</tr>
+	      </thead>
+	      <tbody>
+		<tr>
+		  <td py:content="info.prettydir"/>
+		  <td py:content="info.time_checked"/>
+		  <td py:content="info.check_type"/>
+		  <td py:content="info.pretty_status"/>
+		</tr>
+	      </tbody>
+	    </table>
+		<p></p>
+		<div class="greyborder"></div>
+	    <strong>Log output</strong>
+	    <div>
+	      <pre>${info.log}</pre>
+	    </div>
+	</div>
   </body>
   
 </html>
