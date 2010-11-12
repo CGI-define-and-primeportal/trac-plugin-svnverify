@@ -53,7 +53,7 @@ class SVNVerifyCommands(Component):
             self.log.debug("Verifying new changeset %s to %s", changeset.rev, repos.repos.path)
             self.verify(repos.id, repos.repos.path, changeset.rev)
         
-    def changeset_modified(repos, changeset, old_changeset):
+    def changeset_modified(self, repos, changeset, old_changeset):
         pass
 
     #IAdminCommandProvider methods
