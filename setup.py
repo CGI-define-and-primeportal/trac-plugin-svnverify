@@ -36,7 +36,7 @@ setup(
     author_email = 'nick.piper@logica.com',
     description = 'Adds trac-admin commands to run svnadmin verify and record results.',
     license =  """Copyright (c) 2010, Logica. All rights reserved. Released under the 3-clause BSD license. """,
-    url = "http://d4.planetdefine.net",
+    url = "http://d4.define.logica.com",
     packages = ['svnverifyplugin'],
     package_data = {'svnverifyplugin' : ['templates/*.html','htdocs/css/*.css']}, 
     entry_points = {'trac.plugins': ['svnverifyplugin.web_ui   = svnverifyplugin.web_ui',
