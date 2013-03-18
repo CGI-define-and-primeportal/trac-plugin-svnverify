@@ -110,7 +110,7 @@ class SVNVerifyCommands(Component):
         """
         if revision < 0:
             revision = None
-        self.log.info("Verifying %s at %s" % (repository_id, path))
+        self.log.info("Verifying %s at %s", repository_id, path)
         if revision is None:
             cmdline = ["svnadmin","verify",path]
             level   = "full"
