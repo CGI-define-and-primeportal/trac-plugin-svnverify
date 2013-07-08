@@ -1,0 +1,39 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:xi="http://www.w3.org/2001/XInclude"
+      xmlns:i18n="http://genshi.edgewall.org/i18n"
+      xmlns:py="http://genshi.edgewall.org/">
+  <xi:include href="admin.html" />
+  <head>
+    <title>File Archive: Subversion verify</title>
+  </head>
+  <body>
+    <h2>Subversion Verify</h2>
+
+    <table class="listing" id="trac-reposlist">
+      <thead>
+	<tr>
+	  <th>Name</th><th>Type</th><th>Directory</th><th>Revision</th><th>Last Checked</th><th>Status</th>
+	</tr>
+      </thead>
+      <tbody>
+	<tr py:for="(reponame, info) in sorted(repositories.iteritems())" class="${info.get('status',0) != 0 and 'badrepository' or None}">
+	  <td class="name">
+	    <a href="${panel_href(info.name or '(default)')}">${info.name or _('(default)')}</a>
+	  </td>
+	  <td>${not info.alias and (info.type or _('(default)')) or None}</td>
+	  <td py:choose="">
+	    <py:when test="info.dir">$info.prettydir</py:when>
+	    <em py:otherwise="" i18n:msg="repo">Alias of ${info.alias or _('(default)')}</em>
+	  </td>
+	  <td><a py:if="info.rev" href="${href.changeset(info.rev, reponame) or None}">[$info.display_rev]</a></td>
+	  <td>${info.time_checked} (${info.check_type})</td>
+	  <td py:content="info.pretty_status"></td>
+	</tr>
+      </tbody>
+    </table>
+  </body>
+  
+</html>

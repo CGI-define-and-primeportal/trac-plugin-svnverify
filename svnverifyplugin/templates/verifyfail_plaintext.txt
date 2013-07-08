@@ -1,0 +1,10 @@
+SVN verification failure in ${project_name}
+-------------------------------------------
+
+  Path:      ${event.target}
+
+${event.log}
+
+--
+${project_name} <URL:${project_url}>
+${project_descr}
