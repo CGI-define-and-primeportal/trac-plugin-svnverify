@@ -45,7 +45,10 @@ class SVNVerifyUI(Component):
                 raise TracError(_("Repository '%(repo)s' not found",
                                   repo=path_info))
 
-            cursor.execute("SELECT type, time, result, log FROM svnverify_log WHERE repository_id = %s ORDER BY time DESC LIMIT 1" % info['id'])
+            cursor.execute("SELECT type, time, result, log "
+                           "FROM svnverify_log WHERE repository_id = %s "
+                           "ORDER BY time DESC LIMIT 1",
+                           (info['id'],))
             row = cursor.fetchone()
             if row:
                 info['check_type'] = row[0]
@@ -68,7 +71,11 @@ class SVNVerifyUI(Component):
                         info['display_rev'] = r.display_rev(info['rev'])
                     except:
                         pass
-                    cursor.execute("SELECT type, time, result FROM svnverify_log WHERE repository_id = %s ORDER BY time DESC LIMIT 1" % info['id'])
+                    cursor.execute("SELECT type, time, result "
+                                   "FROM svnverify_log "
+                                   "WHERE repository_id = %s "
+                                   "ORDER BY time DESC LIMIT 1",
+                                   (info['id'],))
                     row = cursor.fetchone()
                     if row:
                         info['check_type'] = row[0]

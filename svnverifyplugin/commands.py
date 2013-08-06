@@ -98,7 +98,10 @@ class SVNVerifyCommands(Component):
         for reponame, info in rm.get_all_repositories().iteritems():
             if info.get('type',rm.repository_type) == "svn" or (rm.repository_type == 'svn' and info.get('type') == ''):
                 self.log.debug("Checking database for status of %s", info)
-                cursor.execute("SELECT result FROM svnverify_log WHERE repository_id = %s ORDER BY time DESC LIMIT 1" % info['id'])
+                cursor.execute("SELECT result FROM svnverify_log "
+                               "WHERE repository_id = %s "
+                               "ORDER BY time DESC LIMIT 1",
+                               (info['id'],))
                 row = cursor.fetchone()
                 if row and row[0] != 0:
                     return False

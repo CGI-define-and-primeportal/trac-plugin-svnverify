@@ -59,7 +59,9 @@ class SVNVerifyDB(Component):
                     self.log.debug(stmt)
                     cursor.execute(stmt)
                     db.commit()
-            cursor.execute("INSERT INTO system (name, value) VALUES ('svnverify_version',%s)", str(schema_version))
+            cursor.execute("INSERT INTO system (name, value) "
+                           "VALUES ('svnverify_version',%s)",
+                           (schema_version,))
         except Exception, e:
             db.rollback()
             self.log.error(e, exc_info=True)
