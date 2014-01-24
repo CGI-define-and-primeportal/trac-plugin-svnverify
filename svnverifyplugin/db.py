@@ -36,7 +36,9 @@ class SVNVerifyDB(Component):
         ]
 
     def environment_created(self):
-        self._upgrade_db(self.env.get_db_cnx())
+        @self.env.with_transaction()
+        def do_create(db):
+            self._upgrade_db(self.env.get_db_cnx())
 
     def environment_needs_upgrade(self, db):
         cursor = db.cursor()
