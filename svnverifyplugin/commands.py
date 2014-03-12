@@ -16,7 +16,7 @@ from datetime import datetime
 from trac.admin import AdminCommandError, IAdminCommandProvider
 from trac.core import Component, implements, ExtensionPoint
 from trac.util.translation import _
-from trac.config import ListOption
+from trac.config import IntOption
 from trac.versioncontrol import RepositoryManager, IRepositoryChangeListener
 from tracrpc.api import IXMLRPCHandler
 from trac.perm import IPermissionRequestor
@@ -38,6 +38,9 @@ class SVNVerifyCommands(Component):
                IPermissionRequestor,
                IRepositoryChangeListener,
                IAnnouncementProducer)
+
+    number_of_commits_to_verify = IntOption("svn", "verify_n_commits", -1, 
+                                            doc="Number of commits to verify when verifying 'all'. -1 for really all.")
 
     # IAnnouncementProducer
     def realms(self):
@@ -107,19 +110,22 @@ class SVNVerifyCommands(Component):
                     return False
         return True
     
-    def verify(self, repository_id, path, revision=None):
+    def verify(self, repository_id, path, revision=None, start=None):
         """Run svnadmin verify against a repository.
         Pass revision as None or -1 to check all revisions.
         """
         if revision < 0:
             revision = None
         self.log.info("Verifying %s at %s", repository_id, path)
-        if revision is None:
-            cmdline = ["svnadmin","verify",path]
-            level   = "full"
-        else:
+        if revision is not None:
             cmdline = ["svnadmin","verify","-r",str(int(revision)),path]
             level   = "revision"
+        elif start is not None:
+            cmdline = ["svnadmin","verify", "-r","%d:HEAD" % start,path]
+            level   = "partial"
+        else:
+            cmdline = ["svnadmin","verify",path]
+            level   = "full"
         self.log.debug(cmdline)
         child = Popen(cmdline, bufsize=-1, stdin=PIPE, stdout=PIPE,
                       stderr=PIPE)
@@ -150,8 +156,20 @@ class SVNVerifyCommands(Component):
         for reponame, info in rm.get_all_repositories().iteritems():
             self.log.debug("Considering %s", info)
             if info.get('type',rm.repository_type) == "svn" or (rm.repository_type == 'svn' and info.get('type') == ''):
-                if not self.verify(info['id'], info['dir']):
-                    all_verified_good = False
+                if self.number_of_commits_to_verify < 0:
+                    bound = 0
+                elif self.number_of_commits_to_verify == 0:
+                    self.log.warning("Not actually verifying any commits due to [svn]verify_n_commits = 0")
+                    return 0
+                else:
+                    y = rm.get_repository(reponame).youngest_rev
+                    bound = max(0, y - self.number_of_commits_to_verify + 1)
+                    self.log.debug("Only want to verify %d commits, so range is %d:HEAD (HEAD is currently %d)", 
+                                   self.number_of_commits_to_verify,
+                                   bound,
+                                   y)
+                if not self.verify(info['id'], info['dir'], start=bound):
+                        all_verified_good = False
         if not all_verified_good:
             return 1
         else:
