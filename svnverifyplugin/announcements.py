@@ -69,12 +69,8 @@ class SVNVerifyAnnouncer(Component):
             project_link = self.env.project_url or self.env.abs_href(),
         )
         chrome = Chrome(self.env)        
-        dirs = []
-        for provider in chrome.template_providers:
-            dirs += provider.get_templates_dirs()
-        templates = TemplateLoader(dirs, variable_lookup='lenient')
-        template = templates.load(self.text_template_name, 
-                cls=NewTextTemplate)
+        template = chrome.load_template(self.text_template_name,
+                                        method='text')
         if template:
             stream = template.generate(**data)
             output = stream.render('text')
