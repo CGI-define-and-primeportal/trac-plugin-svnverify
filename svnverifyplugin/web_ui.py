@@ -4,20 +4,15 @@
 # Author: Nick Piper <nick.piper@logica.com>
 
 import pkg_resources
-import re
-import urllib
-
-from genshi.builder import tag
 
 from trac.admin.api import IAdminPanelProvider
-from trac.core import Component, implements, ExtensionPoint
+from trac.core import Component, implements, TracError
 from trac.util.translation import _
-from trac.web.chrome import add_notice, add_stylesheet, add_warning,\
+from trac.web.chrome import add_stylesheet,\
                             ITemplateProvider
-from trac.config import ListOption, Option
 from trac.versioncontrol import RepositoryManager, is_default
 from trac.util.text import breakable_path
-from trac.util.datefmt import from_utimestamp, to_utimestamp, utc, utcmax, format_datetime
+from trac.util.datefmt import from_utimestamp, format_datetime
 
 class SVNVerifyUI(Component):
 

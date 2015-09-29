@@ -7,10 +7,9 @@
 from trac.core import Component, implements
 from trac.config import ListOption, Option
 from trac.web.chrome import Chrome
+from trac.ticket import TicketSystem
 
-from genshi.template import TemplateLoader, NewTextTemplate
-
-from announcer.api import AnnouncementSystem, AnnouncementEvent, \
+from announcer.api import AnnouncementEvent, \
     IAnnouncementSubscriber, IAnnouncementFormatter
 
 class SVNVerifyFailEvent(AnnouncementEvent):
