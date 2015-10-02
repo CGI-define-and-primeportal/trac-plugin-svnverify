@@ -3,13 +3,19 @@
 # Copyright (c) 2010, Logica
 # Author: Nick Piper <nick.piper@logica.com>
 
+import pkg_resources
+import re
+import urllib
 from subprocess import Popen, PIPE
 
-from trac.util.datefmt import to_utimestamp, utc
+from genshi.builder import tag
+
+from trac.util.datefmt import from_utimestamp, to_utimestamp, utc
 from datetime import datetime
 
-from trac.admin import IAdminCommandProvider
-from trac.core import Component, implements
+from trac.admin import AdminCommandError, IAdminCommandProvider
+from trac.core import Component, implements, ExtensionPoint
+from trac.util.translation import _
 from trac.config import IntOption
 from trac.versioncontrol import RepositoryManager, IRepositoryChangeListener
 from tracrpc.api import IXMLRPCHandler
